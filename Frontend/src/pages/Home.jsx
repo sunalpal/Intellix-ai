@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { io } from "socket.io-client";
+import axios from 'axios';
+import { io } from 'socket.io-client';
 import ChatMobileBar from '../components/chat/ChatMobileBar.jsx';
 import ChatSidebar from '../components/chat/ChatSidebar.jsx';
 import ChatMessages from '../components/chat/ChatMessages.jsx';
@@ -7,7 +8,8 @@ import ChatComposer from '../components/chat/ChatComposer.jsx';
 import   '../components/chat/ChatLayout.css';
 
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 import {
   
   startNewChat,
@@ -56,21 +58,31 @@ const Home = () => {
     getMessages(response.data.chat._id);
     dispatch(startNewChat(response.data.chat));
     setSidebarOpen(false);
+
   }
 
+  
   // Ensure at least one chat exists initially
   useEffect(() => {
+    const token = localStorage.getItem('token'); // or change key to whatever your login stores
 
-    axios.get("https://intellix-ai.onrender.com/api/chat", { withCredentials: true })
-      .then(response => {
-        dispatch(setChats(response.data.chats.reverse()));
-      })
+    if (token) {
+      // Attach token to all axios requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // If backend uses cookie-based auth, also enable credentials:
+      axios.defaults.withCredentials = true;
+    } else {
+      // no token → avoid calls that require auth (or redirect to login)
+    }
 
-    const tempSocket = io("https://intellix-ai.onrender.com", {
-      withCredentials: true,
-    })
+    // initialize socket client with token auth and explicit transports
+    const socket = io(apiUrl || 'https://intellix-ai.onrender.com', {
+      auth: { token },            // server can access via socket.handshake.auth.token
+      transports: ['websocket'],  // prefer websocket (helps avoid polling race)
+      withCredentials: true
+    });
 
-    tempSocket.on("ai-response", (messagePayload) => {
+    socket.on("ai-response", (messagePayload) => {
       console.log("Received AI response:", messagePayload);
 
       setMessages((prevMessages) => [ ...prevMessages, {
@@ -81,8 +93,16 @@ const Home = () => {
       dispatch(sendingFinished());
     });
 
-    setSocket(tempSocket);
+    setSocket(socket);
 
+    axios.get("https://intellix-ai.onrender.com/api/chat", { withCredentials: true })
+      .then(response => {
+        dispatch(setChats(response.data.chats.reverse()));
+      })
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   const sendMessage = async () => {
@@ -107,14 +127,7 @@ const Home = () => {
       content: trimmed
     })
 
-    // try {
-    //   const reply = await fakeAIReply(trimmed);
-    //   dispatch(addAIMessage(activeChatId, reply));
-    // } catch {
-    //   dispatch(addAIMessage(activeChatId, 'Error fetching AI response.', true));
-    // } finally {
-    //   dispatch(sendingFinished());
-    // }
+  
   }
 
   const getMessages = async (chatId) => {
@@ -152,7 +165,7 @@ return (
       {messages.length === 0 && (
         <div className="chat-welcome" aria-hidden="true">
           <div className="chip">Early Preview</div>
-          <h1>Intellix</h1>
+          <h1 >Intellix</h1>
           <p>Curious about something? Paste it here—whether it’s a quick question, a wild idea, or text you want reworked. Every chat stays in your sidebar, ready for you to pick up right where you left off.</p>
         </div>
       )}

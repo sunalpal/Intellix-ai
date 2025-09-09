@@ -20,9 +20,9 @@ const Register = () => {
 
         axios.post("https://intellix-ai.onrender.com/api/auth/register", {
             email: form.email,
-            fullName: {
-                firstName: form.firstname,
-                lastName: form.lastname
+            fullname: {
+                firstname: form.firstname,
+                lastname: form.lastname
             },
             password: form.password
         }, {
