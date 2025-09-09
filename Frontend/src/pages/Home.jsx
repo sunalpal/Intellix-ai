@@ -4,7 +4,7 @@ import ChatMobileBar from '../components/chat/ChatMobileBar.jsx';
 import ChatSidebar from '../components/chat/ChatSidebar.jsx';
 import ChatMessages from '../components/chat/ChatMessages.jsx';
 import ChatComposer from '../components/chat/ChatComposer.jsx';
-import '../components/chat/ChatLayout.css';
+import   '../components/chat/ChatLayout.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -48,7 +48,7 @@ const Home = () => {
     if (title) title = title.trim();
     if (!title) return
 
-    const response = await axios.post("https://intellix-ai.onrender.com", {
+    const response = await axios.post("https://intellix-ai.onrender.com/api/chat", {
       title
     }, {
       withCredentials: true
@@ -61,7 +61,7 @@ const Home = () => {
   // Ensure at least one chat exists initially
   useEffect(() => {
 
-    axios.get("https://intellix-ai.onrender.com", { withCredentials: true })
+    axios.get("https://intellix-ai.onrender.com/api/chat", { withCredentials: true })
       .then(response => {
         dispatch(setChats(response.data.chats.reverse()));
       })
