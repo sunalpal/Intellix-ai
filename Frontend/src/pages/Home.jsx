@@ -1,22 +1,22 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { io } from "socket.io-client";
 import ChatMobileBar from '../components/chat/ChatMobileBar.jsx';
 import ChatSidebar from '../components/chat/ChatSidebar.jsx';
 import ChatMessages from '../components/chat/ChatMessages.jsx';
 import ChatComposer from '../components/chat/ChatComposer.jsx';
 import '../components/chat/ChatLayout.css';
-import { fakeAIReply } from '../components/chat/aiClient.js';
+
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import {
-  ensureInitialChat,
+  
   startNewChat,
   selectChat,
   setInput,
   sendingStarted,
   sendingFinished,
-  addUserMessage,
-  addAIMessage,
+
+ 
   setChats
 } from '../store/chatSlice.js';
 
@@ -29,7 +29,7 @@ const Home = () => {
   const [ sidebarOpen, setSidebarOpen ] = React.useState(false);
   const [ socket, setSocket ] = useState(null);
 
-  const activeChat = chats.find(c => c.id === activeChatId) || null;
+  // const activeChat = chats.find(c => c.id === activeChatId) || null;
 
   const [ messages, setMessages ] = useState([
     // {
@@ -48,7 +48,7 @@ const Home = () => {
     if (title) title = title.trim();
     if (!title) return
 
-    const response = await axios.post("https://intellix-ai.onrender.com/api/chat", {
+    const response = await axios.post("https://intellix-ai.onrender.com", {
       title
     }, {
       withCredentials: true
@@ -61,7 +61,7 @@ const Home = () => {
   // Ensure at least one chat exists initially
   useEffect(() => {
 
-    axios.get("https://intellix-ai.onrender.com/api/chat", { withCredentials: true })
+    axios.get("https://intellix-ai.onrender.com", { withCredentials: true })
       .then(response => {
         dispatch(setChats(response.data.chats.reverse()));
       })
@@ -152,8 +152,8 @@ return (
       {messages.length === 0 && (
         <div className="chat-welcome" aria-hidden="true">
           <div className="chip">Early Preview</div>
-          <h1>ChatGPT Clone</h1>
-          <p>Ask anything. Paste text, brainstorm ideas, or get quick explanations. Your chats stay in the sidebar so you can pick up where you left off.</p>
+          <h1>Intellix</h1>
+          <p>Curious about something? Paste it here—whether it’s a quick question, a wild idea, or text you want reworked. Every chat stays in your sidebar, ready for you to pick up right where you left off.</p>
         </div>
       )}
       <ChatMessages messages={messages} isSending={isSending} />
