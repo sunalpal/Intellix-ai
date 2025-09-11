@@ -12,6 +12,15 @@ const chatRoutes=require("./routes/chat.routes")
 const app=express();
 
 
+//1st middle ware to set security headers
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; style-src-elem 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;"
+  );
+  next();
+});
+
 //Using  middlewares
 app.use(cors({
     origin:["http://localhost:5173"],
