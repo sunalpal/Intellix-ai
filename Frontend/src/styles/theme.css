@@ -19,7 +19,7 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
 
   /* Typography */
-  --font-sans: ".public/Roboto/static/Roboto-Medium.ttf"
+  --font-sans: "Roboto", sans-serif;
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
@@ -39,6 +39,13 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --transition-fast: 120ms cubic-bezier(.4,0,.2,1);
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Roboto-Medium.ttf') format('truetype');
 }
 
 /* Dark Theme (system preference) */
