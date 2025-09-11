@@ -19,7 +19,7 @@
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
 
   /* Typography */
-  --font-sans: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+  --font-sans: ".public/Roboto/static/Roboto-Medium.ttf"
   --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.125rem;
