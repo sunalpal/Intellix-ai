@@ -1,5 +1,12 @@
 /* CSS Variable Theme Tokens (light + dark) */
 /* Keep ONLY variables here; structural styles go elsewhere */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Roboto-Medium.ttf') format('truetype');
+}
 
 :root {
   /* Palette */
@@ -39,13 +46,6 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --transition-fast: 120ms cubic-bezier(.4,0,.2,1);
-}
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/Roboto-Medium.ttf') format('truetype');
 }
 
 /* Dark Theme (system preference) */
