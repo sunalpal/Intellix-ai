@@ -25,7 +25,10 @@ app.use((req, res, next) => {
   next();
 });
 
-
+app.set("view engine","ejs")
+app.get("/",(req,res)=>{
+    res.render("index")
+})
 //Using  middlewares
 app.use(cors({
     origin:["http://localhost:5173"],
@@ -37,6 +40,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'./public/dist')))
 
 // Using Routes
+// app.get("/",HomePage)
 app.use("/api/auth",authRoutes)
 app.use("/api/chat",chatRoutes)
 
